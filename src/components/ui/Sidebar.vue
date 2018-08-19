@@ -91,6 +91,7 @@ export default {
 	created() {
 		this.layout = [
 			{ icon: 'notes', text: 'All Notes', href: "/"},
+			{ icon: 'star', text: 'Favorites', href: "/favorites"},
 			{ divider: true },
 			{ heading: 'Notebooks' },
 			{ treeview: true, data: this.notebooks },
