@@ -74,8 +74,6 @@ import Marked from 'marked'
 import TurnDown from 'turndown'
 import {VueEditor} from 'vue2-editor'
 
-const dummy_notes = require('../../dummy/notes.json')
-
 export default {
   name: 'home',
 	data: () => ({
@@ -114,8 +112,7 @@ export default {
 		VueEditor
 	},
 	created() {
-		const data = require('../../dummy/notes.json');
-		this.notes = dummy_notes
+		this.notes =require('../../dummy/notes.json');
 	}
 }
 </script>
