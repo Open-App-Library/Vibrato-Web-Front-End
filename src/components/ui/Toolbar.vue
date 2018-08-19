@@ -1,5 +1,14 @@
 <template>
-<v-toolbar id="vibrato-toolbar" height="50" color="blue" dark app absolute clipped-left flat>
+<v-toolbar
+	id="vibrato-toolbar"
+	height="50"
+	color="blue"
+	dark
+	app
+	clipped-left
+	flat
+	fixed
+	>
 	<img id="logo" src="../../assets/logo.svg">
 	<v-spacer></v-spacer>
 	<v-text-field

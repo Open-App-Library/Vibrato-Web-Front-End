@@ -17,7 +17,6 @@ export default {
 	}),
 	methods: {
 		onChange(e) {
-			console.log("change")
 			this.$emit('input', this.true_or_false)
 		}
 	},
