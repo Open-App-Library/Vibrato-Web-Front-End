@@ -1,19 +1,22 @@
 <template>
-<v-app id="inspire">
+<v-app :dark="$root.darkmode" id="inspire">
 	<Sidebar></Sidebar>
 	<Toolbar></Toolbar>
 	<v-content>
-		<v-container fluid>
-
-		</v-container>
+		<router-view></router-view>
 	</v-content>
 </v-app>
 </template>
 
 <script>
-import Sidebar from '@/components/Sidebar.vue'
-import Toolbar from '@/components/Toolbar.vue'
+import Sidebar from '@/components/ui/Sidebar.vue'
+import Toolbar from '@/components/ui/Toolbar.vue'
 export default {
+	data() {
+		return {
+			title: "Hello"
+		}
+	},
 	components: {
 		Sidebar,
 		Toolbar,

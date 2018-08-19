@@ -1,23 +1,17 @@
 <template>
 <div class="tree-view">
 	<li>
-		<div
-			:class="{bold: isFolder}"
-			>
-			<v-list-tile v-if="model.name != 'ROOT'" @click=""> <!-- Click This To Access Node -->
-				<v-list-tile-action>
-					<v-btn v-if="isFolder" @click="toggle" flat icon>
-						<v-icon>keyboard_arrow_down</v-icon>
-					</v-btn>
-				</v-list-tile-action>
-				<v-list-tile-content>
-					<v-list-tile-title class="grey--text">
-						{{model.name}}
-					</v-list-tile-title>
-				</v-list-tile-content>
-			</v-list-tile>
-		</div>
-		<ul v-show="open" :class="{root_ul: model.name == 'ROOT'}">
+		<v-list-tile v-if="model.name != 'ROOT'" :to="model.href ? model.href : ''"> <!-- Click This To Access Node -->
+			<v-list-tile-action>
+				<v-btn v-if="isFolder" v-on:click.stop.prevent="toggle" flat icon>
+					<v-icon>keyboard_arrow_{{open ? 'down' : 'right'}}</v-icon>
+				</v-btn>
+			</v-list-tile-action>
+			<v-list-tile-content>
+				<v-list-tile-title>{{model.name}}</v-list-tile-title>
+			</v-list-tile-content>
+		</v-list-tile>
+		<ul v-show="shouldShow(model.name)" :class="{root_ul: model.name == 'ROOT'}">
 			<Treeview
 				v-for="(model, index) in model.children"
 				:key="index"
@@ -33,7 +27,7 @@ export default {
   name: 'Treeview',
 	props: ['model'],
 	data: () => ({
-		open: true
+		open: false
 	}),
 	methods: {
 		toggle() {
@@ -52,6 +46,15 @@ export default {
 			this.model.children.push({
 				name: 'New Item'
 			})
+		},
+		shouldShow(model_name) {
+			if (model_name == "ROOT") {
+				return true
+			} else if (this.open) {
+				return true
+			} else {
+				return false
+			}
 		}
 	},
 	computed: {
@@ -69,4 +72,6 @@ export default {
 	padding: 8px 0
 	ul.root_ul
 		padding: 0
+	#tree_label
+		color: #303030
 </style>

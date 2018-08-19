@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
-import Home from './views/Home.vue'
+import Notes from './views/Note.vue'
 
 Vue.use(Router)
 Vue.use(Vuetify)
@@ -15,16 +15,21 @@ export default new Router({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
-			component: Home
+			name: 'all-notes',
+			component: Notes
 		},
 		{
-			path: '/about',
-			name: 'about',
-			// route level code-splitting
-			// this generates a separate chunk (about.[hash].js) for this route
-			// which is lazy-loaded when the route is visited.
-			component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+			path: '/note/:id',
+			name: 'single-note',
+			component: Notes
 		}
+		// {
+		// 	path: '/about',
+		// 	name: 'about',
+		// 	// route level code-splitting
+		// 	// this generates a separate chunk (about.[hash].js) for this route
+		// 	// which is lazy-loaded when the route is visited.
+		// 	component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+		// }
 	]
 })
