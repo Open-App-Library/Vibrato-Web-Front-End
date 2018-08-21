@@ -37,8 +37,13 @@
 		<v-container id="note_container">
 			<div v-if="selected_note_index != null" id="the_editor">
 				<!-- The Title Input -->
-				<v-text-field class="headline" :value="curNote.title" @input="e => notes[selected_note_index].title = e"></v-text-field>
-				<v-tabs right>
+				<v-text-field
+					placeholder="Title"
+					class="headline"
+					:value="curNote.title"
+					@input="e => notes[selected_note_index].title = e"
+				></v-text-field>
+				<v-tabs right id="editor-tabs">
 					<v-tab @click="markdown_mode = false">
 						Fancy
 					</v-tab>
@@ -164,12 +169,19 @@
 	}
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 	.note_column, .note_edit_column
 		max-height: calc(100vh - 50px) // 50px is the height of toolbar
 		overflow-y: scroll
 	.note_column
 		min-width: 365px
+		overflow-y: hidden
+		&:hover
+			overflow-y: scroll
 	#dark_column
 		background: #424242
+	#editor-tabs .v-tabs__bar
+		background: rgba(0,0,0,0) !important
+	.ql-toolbar
+		background: #ececec
 </style>
