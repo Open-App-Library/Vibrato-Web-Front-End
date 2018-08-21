@@ -10,7 +10,7 @@
 					:key="note.title"
 					avatar
 					ripple
-					@click="selected_note_index = index"
+					@click="selectNote(index)"
 					>
 					<v-list-tile-content>
 						<v-list-tile-title class="text--primary">{{ note.title}} </v-list-tile-title>
@@ -38,48 +38,25 @@
 			<div v-if="selected_note_index != null" id="the_editor">
 				<!-- The Title Input -->
 				<v-text-field class="headline" :value="curNote.title" @input="e => notes[selected_note_index].title = e"></v-text-field>
-				<v-layout>
-					<v-flex xs6>
-						<h3>selected_note_html</h3>
-						<p>{{JSON.stringify(selected_note_html)}}</p>
-					</v-flex>
-					<v-flex xs6>
-						<h3>selected_note_markdown</h3>
-						<p>{{JSON.stringify(selected_note_markdown)}}</p>
-					</v-flex>
-				</v-layout>
-				<v-layout>
-					<v-flex xs6>
-						<h3>tmp_c_markdown</h3>
-						<p>{{JSON.stringify(tmp_c_markdown)}}</p>
-					</v-flex>
-					<v-flex xs6>
-						<h3>tmp_c_html</h3>
-						<p>{{JSON.stringify(tmp_c_html)}}</p>
-					</v-flex>
-				</v-layout>
-
-				<v-btn @click="emitStuff()">click</v-btn>
-
 				<v-tabs right>
-					<v-tab>
+					<v-tab @click="markdown_mode = false">
 						Fancy
 					</v-tab>
-					<v-tab>
+					<v-tab @click="markdown_mode = true">
 						Markdown
 					</v-tab>
 					<v-tab-item>
 						<VueEditor
 							:editorToolbar="editor_toolbar"
 							:value="selected_note_html"
-							@input="e => htmlChange(e)"
+							@input="e => changeNoteText('html', e)"
 						></VueEditor>
 					</v-tab-item>
 					<v-tab-item>
 						<SimpleMDE
-							custom_ref="markdown_editor"
+							:isVisible="markdown_mode"
 							:value="selected_note_markdown"
-							@input="e => markdownChange(e)"
+							@input="e => changeNoteText('md', e)"
 						></SimpleMDE>
 					</v-tab-item>
 				</v-tabs>
@@ -99,7 +76,11 @@
 	import SimpleMDE from '@/components/parts/SimpleMDE'
 
 	const FANCY_MODE = 0, MARKDOWN_MODE = 1
-	var turndown = new TurnDown({headingStyle: "atx", codeBlockStyle: "indent"})
+	var turndown = new TurnDown({headingStyle: "atx", codeBlockStyle: "fence"})
+
+	function s(str) {
+		return JSON.stringify(str)
+	}
 
 	export default {
   	name: 'home',
@@ -107,12 +88,10 @@
 			favorites: [0, 2],
 			notes: [],
 			simplemde: null,
+			markdown_mode: false,
 			selected_note_index: null,
 			selected_note_html: "",
 			selected_note_markdown: "",
-			// Delete these two
-			tmp_c_html: "",
-			tmp_c_markdown: "",
 			editor_toolbar: [
 				[{ header: [1, 2, 3, 4, 5, 6, false] }],
 				['bold', 'italic', 'underline'],
@@ -132,26 +111,42 @@
 			getDescription(text) {
 				return text.trim().replace(/[^a-zA-Z ]/g, ' ').substring(0,70)+'...'
 			},
-			change(input_type, data) {
+			selectNote(index) {
+				this.selected_note_index = index
+				this.changeNoteText('md', this.curNote.text, true)
+			},
+			cleanHTML(html) {
+				html = html.replace(/(<(?!\/)[^>]+>)+(<\/[^>]+>)+/g, "") // Remove empty tags. ex: <p></p>
+				return html
+			},
+			changeNoteText(input_type, data, force = false) {
+				// TODO: Create an abstraction for compiling and decompiling HTML/Markdown
+				// TODO: Create unit tests to make sure compiling and decompiling always produce the same result.
 				var html = data, markdown = data
-				if input_type
-			}
-			htmlChange(html) {
-				// This functions takes HTML, cleans it,
-				// converts to markdown, and updates appropriate variables
-				this.selected_note_html = JSON.stringify(html)
-				this.selected_note_markdown = JSON.stringify(turndown.turndown(html))
-			},
-			markdownChange(markdown) {
-				// This functions takes markdown, cleans it,
-				// converts to HTML, and updates appropriate variables
-				this.selected_note_markdown = JSON.stringify(markdown)
-				var html = JSON.stringify(Marked(markdown))
-				if (this.selected_note_html !=)
-				this.selected_note_html = JSON.stringify(Marked(markdown))
-			},
-			emitStuff() {
-				this.selected_note_markdown = "it workedd"
+				if (input_type == "html") {
+					if (this.markdown_mode && !force) {
+						return // User is using markdown editor. Do not proceed.
+					}
+					html = this.cleanHTML(html)
+					html = html.replace(/\n/g, "") // Remove newlines from HTML..unneeded
+					html = html.replace("<p><br></p>", "") // Replace wrapped br with nothing
+					markdown = turndown.turndown(html)
+				} else { // markdown
+					if (!this.markdown_mode && !force) {
+						return // User is using fancy editor. Do not proceed.
+					}
+					html = Marked(markdown).replace(/\n/g, "<br>")
+					html = this.cleanHTML(html)
+				}
+				if (this.selected_note_html != html && this.markdown_mode || force) {
+					this.selected_note_html = html
+				}
+				if (this.selected_note_markdown != markdown && !this.markdown_mode || force) {
+					this.selected_note_markdown = markdown
+				}
+				if (this.curNote.text != markdown || force) {
+					this.curNote.text = markdown
+				}
 			}
 		},
 		computed: {
