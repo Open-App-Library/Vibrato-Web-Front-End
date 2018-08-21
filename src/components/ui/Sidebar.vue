@@ -1,6 +1,6 @@
 <template>
 <v-navigation-drawer
-	id="vibrato-sidebar"
+	id="vibrato_sidebar"
 	enable-resize-watcher
 	fixed
 	permanent
@@ -117,7 +117,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="sass">
-#vibrato-sidebar
+<style lang="sass" scoped>
+#vibrato_sidebar
 	padding-top: 16px
+	overflow-y: hidden
+	&:hover
+		overflow-y: scroll
 </style>

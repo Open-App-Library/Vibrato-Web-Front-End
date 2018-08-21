@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import 'simplemde/dist/simplemde.min.css'
 
 import Notes from './views/Note.vue'
 

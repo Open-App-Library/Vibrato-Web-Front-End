@@ -38,6 +38,29 @@
 			<div v-if="selected_note_index != null" id="the_editor">
 				<!-- The Title Input -->
 				<v-text-field class="headline" :value="curNote.title" @input="e => notes[selected_note_index].title = e"></v-text-field>
+				<v-layout>
+					<v-flex xs6>
+						<h3>selected_note_html</h3>
+						<p>{{JSON.stringify(selected_note_html)}}</p>
+					</v-flex>
+					<v-flex xs6>
+						<h3>selected_note_markdown</h3>
+						<p>{{JSON.stringify(selected_note_markdown)}}</p>
+					</v-flex>
+				</v-layout>
+				<v-layout>
+					<v-flex xs6>
+						<h3>tmp_c_markdown</h3>
+						<p>{{JSON.stringify(tmp_c_markdown)}}</p>
+					</v-flex>
+					<v-flex xs6>
+						<h3>tmp_c_html</h3>
+						<p>{{JSON.stringify(tmp_c_html)}}</p>
+					</v-flex>
+				</v-layout>
+
+				<v-btn @click="emitStuff()">click</v-btn>
+
 				<v-tabs right>
 					<v-tab>
 						Fancy
@@ -48,11 +71,16 @@
 					<v-tab-item>
 						<VueEditor
 							:editorToolbar="editor_toolbar"
-							:value="curNoteToHTML"
-							></VueEditor>
+							:value="selected_note_html"
+							@input="e => htmlChange(e)"
+						></VueEditor>
 					</v-tab-item>
 					<v-tab-item>
-						<SimpleMDE></SimpleMDE>
+						<SimpleMDE
+							custom_ref="markdown_editor"
+							:value="selected_note_markdown"
+							@input="e => markdownChange(e)"
+						></SimpleMDE>
 					</v-tab-item>
 				</v-tabs>
 			</div>
@@ -67,13 +95,11 @@
 <script>
 	import Marked from 'marked'
 	import {VueEditor} from 'vue2-editor'
-	import Showdown from 'showdown'
+	import TurnDown from 'turndown'
 	import SimpleMDE from '@/components/parts/SimpleMDE'
 
-	const showdown = new Showdown.Converter()
-
 	const FANCY_MODE = 0, MARKDOWN_MODE = 1
-	//var HTMLToMarkdown = new TurnDown({headingStyle: "atx", codeBlockStyle: "indent"})
+	var turndown = new TurnDown({headingStyle: "atx", codeBlockStyle: "indent"})
 
 	export default {
   	name: 'home',
@@ -84,6 +110,9 @@
 			selected_note_index: null,
 			selected_note_html: "",
 			selected_note_markdown: "",
+			// Delete these two
+			tmp_c_html: "",
+			tmp_c_markdown: "",
 			editor_toolbar: [
 				[{ header: [1, 2, 3, 4, 5, 6, false] }],
 				['bold', 'italic', 'underline'],
@@ -103,22 +132,32 @@
 			getDescription(text) {
 				return text.trim().replace(/[^a-zA-Z ]/g, ' ').substring(0,70)+'...'
 			},
-			HTMLToMarkdown(html) {
-				return Breakdance(html)
+			change(input_type, data) {
+				var html = data, markdown = data
+				if input_type
+			}
+			htmlChange(html) {
+				// This functions takes HTML, cleans it,
+				// converts to markdown, and updates appropriate variables
+				this.selected_note_html = JSON.stringify(html)
+				this.selected_note_markdown = JSON.stringify(turndown.turndown(html))
 			},
-			cleanMarkdown(markdown) {
-				markdown = markdown.replace(/\<\/?p\>/g, "").replace(/<br>/g, "\n")
-				return markdown
+			markdownChange(markdown) {
+				// This functions takes markdown, cleans it,
+				// converts to HTML, and updates appropriate variables
+				this.selected_note_markdown = JSON.stringify(markdown)
+				var html = JSON.stringify(Marked(markdown))
+				if (this.selected_note_html !=)
+				this.selected_note_html = JSON.stringify(Marked(markdown))
+			},
+			emitStuff() {
+				this.selected_note_markdown = "it workedd"
 			}
 		},
 		computed: {
 			curNote() {
 				return this.notes[this.selected_note_index]
-			},
-			curNoteToHTML() {
-				//return this.curNote.text
-				return showdown.makeHtml(this.curNote.text)
-			},
+			}
 		},
 		components: {
 			VueEditor,
