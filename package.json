@@ -8,12 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "jest": "^23.5.0",
     "@babel/preset-env": "^7.0.0-rc.1",
     "babel-polyfill": "^6.26.0",
-    "breakdance": "^3.0.1",
-    "jest": "^23.5.0",
     "marked": "^0.5.0",
-    "showdown": "^1.8.6",
     "simplemde": "^1.11.2",
     "turndown": "^5.0.0",
     "vue": "^2.5.17",
