@@ -13,24 +13,24 @@
 		:class="$root.chooseClasses('grey lighten-4')"
 
 		>
-		<template v-for="(item, i) in layout">
-			<v-layout v-if="item.heading" :key="i" row align-center>
+		<div v-for="(item, i) in layout" :key="i">
+			<v-layout v-if="item.heading" row align-center>
 				<v-flex xs6>
 					<v-subheader v-if="item.heading">
 						{{ item.heading }}
 					</v-subheader>
 				</v-flex>
 				<v-flex xs6 class="text-xs-right">
-					<v-btn small flat>View All</v-btn>
+					<v-btn small flat :to="item.href">View All</v-btn>
 				</v-flex>
 			</v-layout>
 
-			<v-divider v-else-if="item.divider" :key="i" dark class="my-3"></v-divider>
+			<v-divider v-else-if="item.divider" dark class="my-3"></v-divider>
 
 			<Treeview v-else-if="item.treeview" :model="item.data"></Treeview>
 			<Listview v-else-if="item.listview" :items="item.data"></Listview>
 
-			<v-list-tile v-else :key="i" :to="item.href ? item.href : ''">
+			<v-list-tile v-else :to="item.href ? item.href : ''">
 				<v-list-tile-action>
 					<v-icon>{{ item.icon }}</v-icon>
 				</v-list-tile-action>
@@ -40,7 +40,7 @@
 					</v-list-tile-title>
 				</v-list-tile-content>
 			</v-list-tile>
-		</template>
+		</div>
 	</v-list>
 </v-navigation-drawer>
 
@@ -93,7 +93,7 @@ export default {
 			{ icon: 'notes', text: 'All Notes', href: "/"},
 			{ icon: 'star', text: 'Favorites', href: "/favorites"},
 			{ divider: true },
-			{ heading: 'Notebooks' },
+			{ heading: 'Notebooks', href: "/notebooks" },
 			{ treeview: true, data: this.notebooks },
 			{ icon: 'add', text: 'Create new notebook' },
 			{ divider: true },

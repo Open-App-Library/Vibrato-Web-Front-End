@@ -22,6 +22,11 @@ export default new Router({
 			path: '/note/:id',
 			name: 'single-note',
 			component: Notes
+		},
+		{
+			path: '/notebooks',
+			name: 'notebooks',
+			component: () => import(/* webpackChunkName: "notebooks" */ './views/Notebooks.vue')
 		}
 		// {
 		// 	path: '/about',
@@ -33,3 +38,4 @@ export default new Router({
 		// }
 	]
 })
+

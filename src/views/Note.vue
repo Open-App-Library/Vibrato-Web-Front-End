@@ -76,8 +76,8 @@
 
 <script>
 	import Marked from 'marked'
-	import {VueEditor} from 'vue2-editor'
 	import TurnDown from 'turndown'
+	import {VueEditor} from 'vue2-editor'
 	import SimpleMDE from '@/components/parts/SimpleMDE'
 
 	const FANCY_MODE = 0, MARKDOWN_MODE = 1

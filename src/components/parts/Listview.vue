@@ -1,7 +1,7 @@
 <template>
 <div class="list-view">
 	<v-list>
-		<v-list-tile v-for="item in items" :to="item.href ? item.href : ''">
+		<v-list-tile v-for="(item, index) in items" :key="index" :to="item.href ? item.href : ''">
 			<v-list-tile-action>
 				<v-icon>{{item.icon}}</v-icon>
 			</v-list-tile-action>
