@@ -64,7 +64,11 @@
 	},
 	"env": {
 		"test": {
-			"presets": [["env"]]
+			"presets": [
+				[
+					"env"
+				]
+			]
 		}
 	}
 }

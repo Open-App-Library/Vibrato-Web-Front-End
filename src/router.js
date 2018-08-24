@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
-import Notes from './views/Note.vue'
+import AllNotes from './views/AllNotes.vue'
 
 Vue.use(Router)
 Vue.use(Vuetify)
@@ -16,12 +16,18 @@ export default new Router({
 		{
 			path: '/',
 			name: 'all-notes',
-			component: Notes
+			component: AllNotes
 		},
 		{
 			path: '/note/:id',
 			name: 'single-note',
-			component: Notes
+			component: AllNotes
+		},
+		{
+			path: '/notebook/:notebook_id',
+			name: 'single-notebook',
+			props: true,
+			component: AllNotes
 		},
 		{
 			path: '/notebooks',
