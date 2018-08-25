@@ -1,11 +1,16 @@
 <template>
-	<v-layout fill-height>
-		<v-flex xs3 class="note_column" :id="$root.darkmode ? 'dark_column' : 'light_column'">
-			<v-list :three-line="!$root.compactmode">
-				<v-subheader>
-					Notes
-				</v-subheader>
-				<template v-for="(note, index) in notes">
+<v-layout fill-height>
+	<v-flex xs3 class="note_column" :id="$root.darkmode ? 'dark_column' : 'light_column'">
+		<v-list :three-line="!$root.compactmode">
+			<v-subheader>
+				Notes
+			</v-subheader>
+			<v-list-tile v-if="notes.length == 0">
+				<v-list-tile-content>
+					<v-list-tile-title>Zero notes matched your criteria.</v-list-tile-title>
+				</v-list-tile-content>
+			</v-list-tile>
+			<template v-else v-for="(note, index) in notes">
 					<v-list-tile
 						:key="note.title"
 						avatar
