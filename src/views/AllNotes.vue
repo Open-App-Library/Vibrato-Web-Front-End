@@ -70,11 +70,11 @@
 			this.get_notes(this.notebook_id, this.tag_id, this.selected_note_id)
 		},
 		beforeRouteUpdate(to, from, next) {
-			this.get_notes(
-				to.params.notebook_id,
-				to.params.tag_id,
-				to.params.selected_note_id
-			)
+			// this.get_notes(
+			// 	to.params.notebook_id,
+			// 	to.params.tag_id,
+			// 	to.params.selected_note_id
+			// )
 			next()
 		},
 	}

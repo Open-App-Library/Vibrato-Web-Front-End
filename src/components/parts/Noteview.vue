@@ -11,73 +11,72 @@
 				</v-list-tile-content>
 			</v-list-tile>
 			<template v-else v-for="(note, index) in notes">
-					<v-list-tile
-						:key="note.title"
-						avatar
-						ripple
-						@click="selectNote(index)"
-						>
-						<v-list-tile-content>
-							<v-list-tile-title class="text--primary">{{ note.title}} </v-list-tile-title>
-							<v-list-tile-sub-title>{{ getDescription(note.text) }}</v-list-tile-sub-title>
-						</v-list-tile-content>
-						<v-list-tile-action>
-							<v-list-tile-action-text>{{ note.date_created }}</v-list-tile-action-text>
-							<v-icon
-								@click.stop.prevent="toggleFavorite(index)"
-								:color="favorites.includes(index) ? 'yellow darken-2' : 'grey lighten-1'"
-								>
-								star
-							</v-icon>
-						</v-list-tile-action>
-					</v-list-tile>
-					<v-divider
-						v-if="index + 1 < notes.length"
-						:key="index"
-						></v-divider>
-				</template>
-			</v-list>
-		</v-flex>
-		<v-flex xs9 class="note_edit_column">
-			<v-container id="note_container">
-				<div v-if="local_note_index != null" id="the_editor">
-					<!-- The Title Input -->
-					{{curNote.notebook}}
-					<v-text-field
-						placeholder="Title"
-						class="headline"
-						:value="curNote.title"
-						@input="e => notes[local_note_index].title = e"
-						></v-text-field>
-					<v-tabs right id="editor-tabs">
-						<v-tab @click="markdown_mode = false">
-							Fancy
-						</v-tab>
-						<v-tab @click="markdown_mode = true">
-							Markdown
-						</v-tab>
-						<v-tab-item>
-							<VueEditor
-								:editorToolbar="editor_toolbar"
-								:value="selected_note_html"
-								@input="e => changeNoteText('html', e)"
-								></VueEditor>
-						</v-tab-item>
-						<v-tab-item>
-							<SimpleMDE
-								:isVisible="markdown_mode"
-								:value="selected_note_markdown"
-								@input="e => changeNoteText('md', e)"
-								></SimpleMDE>
-						</v-tab-item>
-					</v-tabs>
-				</div>
-				<div v-else>
-					No Note selected
-				</div>
-			</v-container>
-		</v-flex>
-	</v-layout>
+				<v-list-tile
+					:key="note.title"
+					avatar
+					ripple
+					@click="selectNote(index)"
+					>
+					<v-list-tile-content>
+						<v-list-tile-title class="text--primary">{{ note.title}} </v-list-tile-title>
+						<v-list-tile-sub-title>{{ getDescription(note.text) }}</v-list-tile-sub-title>
+					</v-list-tile-content>
+					<v-list-tile-action>
+						<v-list-tile-action-text>{{ note.date_created }}</v-list-tile-action-text>
+						<v-icon
+							@click.stop.prevent="toggleFavorite(index)"
+							:color="favorites.includes(index) ? 'yellow darken-2' : 'grey lighten-1'"
+							>
+							star
+						</v-icon>
+					</v-list-tile-action>
+				</v-list-tile>
+				<v-divider
+					v-if="index + 1 < notes.length"
+					:key="index"
+					></v-divider>
+			</template>
+		</v-list>
+	</v-flex>
+	<v-flex xs9 class="note_edit_column">
+		<v-container id="note_container">
+			<div v-if="local_note_index != null" id="the_editor">
+				<!-- The Title Input -->
+				<v-text-field
+					placeholder="Title"
+					class="headline"
+					:value="curNote.title"
+					@input="e => notes[local_note_index].title = e"
+					></v-text-field>
+				<v-tabs right id="editor-tabs">
+					<v-tab @click="markdown_mode = false">
+						Fancy
+					</v-tab>
+					<v-tab @click="markdown_mode = true">
+						Markdown
+					</v-tab>
+					<v-tab-item>
+						<VueEditor
+							:editorToolbar="editor_toolbar"
+							:value="selected_note_html"
+							@input="e => changeNoteText('html', e)"
+							></VueEditor>
+					</v-tab-item>
+					<v-tab-item>
+						<SimpleMDE
+							:isVisible="markdown_mode"
+							:value="selected_note_markdown"
+							@input="e => changeNoteText('md', e)"
+							></SimpleMDE>
+					</v-tab-item>
+				</v-tabs>
+			</div>
+			<div v-else>
+				No Note selected
+			</div>
+		</v-container>
+	</v-flex>
+</v-layout>
 </template>
 
 <script>
@@ -159,9 +158,6 @@
 		},
 		computed: {
 			curNote() {
-				if (this.notes.length == 0) {
-					return null
-				}
 				return this.notes[this.local_note_index]
 			}
 		},
@@ -180,7 +176,7 @@
 		},
 		created() {
 			// If the selected_note_index is set, select & load the note
-			if (!isNaN(this.selected_note_index)) {
+			if (this.selected_note_index >= 0 && this.selected_note_index != null) {
 				this.selectNote(this.selected_note_index)
 			}
 		}

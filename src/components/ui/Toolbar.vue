@@ -9,7 +9,7 @@
 	flat
 	fixed
 	>
-	<img id="logo" src="../../assets/logo.svg">
+	<router-link id="logo_link" to="/"><img id="logo" src="../../assets/logo.svg"></router-link>
 	<v-spacer></v-spacer>
 	<v-text-field
 		solo-inverted
@@ -27,7 +27,6 @@
 			:close-on-content-click="false"
 			:nudge-width="300"
 			offset-x
-			
 		>
 			<v-btn flat slot="activator" dark>Doug<v-icon right>account_box</v-icon></v-btn>
 
@@ -92,14 +91,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
 #vibrato-toolbar
-	img#logo
-		max-height: 38px
+	#logo_link
 		padding: 5px 0
-		opacity: 0.8
-		transition: 100ms ease-in
-		&:hover
-			opacity: 1.0
-			cursor: pointer
+		max-height: 38px
+		img#logo
+			max-height: 28px // 38px - 10px (10px = the padding above * 2)
+			opacity: 0.8
+			transition: 100ms ease-in
+			&:hover
+				opacity: 1.0
+				cursor: pointer
 	// Make sure searchbar respects navbar height
 	.v-text-field.v-text-field--solo .v-input__control
 		min-height: 35px

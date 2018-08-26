@@ -3,7 +3,7 @@
 	<Sidebar></Sidebar>
 	<Toolbar></Toolbar>
 	<v-content>
-		<router-view></router-view>
+		<router-view :key="$route.path"></router-view>
 	</v-content>
 </v-app>
 </template>
