@@ -25,7 +25,7 @@
 						<v-list-tile-action-text>{{ note.date_created }}</v-list-tile-action-text>
 						<v-icon
 							@click.stop.prevent="note.is_favorited = !note.is_favorited"
-							:color="note.is_favorited ? 'yellow darken-2' : 'grey lighten-1'"
+							:color="favoritedColor(note)"
 							>
 							star
 						</v-icon>
@@ -39,6 +39,34 @@
 		</v-list>
 	</v-flex>
 	<v-flex xs9 class="note_edit_column">
+		<!-- Note Editing Bar -->
+			<v-toolbar v-if="local_note_index != null" flat dense color="white">
+				<v-overflow-btn
+					:items="availible_notebooks"
+					label="Notebook"
+					hide-details
+				></v-overflow-btn>
+
+				<v-divider vertical></v-divider>
+
+				<v-btn-toggle
+					class="transparent"
+				>
+					<v-btn
+						:value="curNote.is_favorited"
+						@click="toggleFavorited()"
+						flat
+						class="notTransparent"
+					>
+						<v-icon :color="curNoteFavoritedColor">star</v-icon>
+					</v-btn>
+
+					<v-btn :value="4" flat>
+						<v-icon>delete</v-icon>
+					</v-btn>
+				</v-btn-toggle>
+			</v-toolbar>
+		<!-- Note Editing Bar END -->
 		<v-container id="note_container">
 			<div v-if="local_note_index != null" id="the_editor">
 				<!-- The Title Input -->
@@ -48,6 +76,7 @@
 					:value="curNote.title"
 					@input="e => notes[local_note_index].title = e"
 					></v-text-field>
+
 				<v-tabs right id="editor-tabs">
 					<v-tab @click="markdown_mode = false">
 						Fancy
@@ -55,6 +84,7 @@
 					<v-tab @click="markdown_mode = true">
 						Markdown
 					</v-tab>
+
 					<v-tab-item>
 						<VueEditor
 							:editorToolbar="editor_toolbar"
@@ -107,13 +137,11 @@
 			],
 		}),
 		methods: {
-			toggleFavorite(num) {
-				if (this.favorites.includes(num)) {
-					const index_to_remove = this.favorites.indexOf(num)
-					this.favorites.splice(index_to_remove, 1)
-				} else{
-					this.favorites.push(num)
-				}
+			toggleFavorited() {
+				this.notes[this.local_note_index].is_favorited = !this.notes[this.local_note_index].is_favorited
+			},
+			favoritedColor(note) {
+				return note.is_favorited ? 'yellow darken-2' : 'grey lighten-1'
 			},
 			getDescription(text) {
 				return text.trim().replace(/[^a-zA-Z ]/g, ' ').substring(0,70)+'...'
@@ -159,6 +187,23 @@
 		computed: {
 			curNote() {
 				return this.notes[this.local_note_index]
+			},
+			curNoteFavoritedColor() {
+				return this.curNote.is_favorited ? 'yellow darken-2' : 'grey lighten-1'
+			},
+			availible_notebooks() {
+				var notebooks = []
+				for (var notebook of this.$root.notebooks) {
+					notebooks.push({text: notebook.title, id: notebook.id})
+				}
+				return notebooks
+			},
+			availible_tags() {
+				var tags = []
+				for (var tag of this.$root.tags) {
+					tags.push({text: tag.title, id: tag.id})
+				}
+				return tags
 			}
 		},
 		components: {
@@ -198,4 +243,6 @@
 		background: rgba(0,0,0,0) !important
 	.ql-toolbar
 		background: #ececec
+	.notTransparent
+		opacity: 1 !important
 </style>

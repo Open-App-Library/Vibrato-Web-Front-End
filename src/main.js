@@ -18,6 +18,7 @@ var global_methods = {
 		// Loads notes, notebooks and other API data
 		this.notes = require('../dummy/notes.json')
 		this.notebooks = require('../dummy/notebooks.json')
+		this.tags = require('../dummy/tags.json')
 	},
 	getNotebookById(id) {
 		for (var notebook of this.notebooks) {
