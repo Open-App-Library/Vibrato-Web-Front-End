@@ -20,14 +20,14 @@
 						{{ item.heading }}
 					</v-subheader>
 				</v-flex>
-				<v-flex xs6 class="text-xs-right">
+				<v-flex v-if="!item.hide_btn" xs6 class="text-xs-right">
 					<v-btn small flat :to="item.href">View All</v-btn>
 				</v-flex>
 			</v-layout>
 
 			<v-divider v-else-if="item.divider" dark class="my-3"></v-divider>
 
-			<Treeview v-else-if="item.treeview" :model="item.data"></Treeview>
+			<Treeview :is_root="true" v-else-if="item.treeview" :model="item.data"></Treeview>
 			<Listview v-else-if="item.listview" :items="item.data"></Listview>
 
 			<v-list-tile v-else :to="item.href ? item.href : ''">
@@ -50,14 +50,13 @@
 import Treeview from '@/components/parts/Treeview.vue'
 import Listview from '@/components/parts/Listview.vue'
 
-const dummy_notebooks = require('../../../dummy/notebooks.json')
-
 export default {
 	name: 'Sidebar',
 	data: () => ({
 		layout: [],
 		notebooks: {
-			title: 'ROOT',
+			title: 'All Notebooks',
+			href: '/notebooks',
 			children: null
 		},
 		tags: [
@@ -70,9 +69,10 @@ export default {
 	methods: {
 		load_notebooks() {
 			// Dummy data!
-			this.notebooks.children = dummy_notebooks
+			this.notebooks.children = this.$root.notebooks
 		},
 		setURLs(base_url, items) {
+			// create URL 
 			for (var i in items) {
 				items[i].href=base_url + items[i].id + "/"
 				if (items[i].children) {
@@ -90,10 +90,12 @@ export default {
 	},
 	created() {
 		this.layout = [
+			{ icon: 'edit', text: 'Create New Note', href: "/create-or-something"},
+			{ divider: true },
 			{ icon: 'notes', text: 'All Notes', href: "/"},
 			{ icon: 'star', text: 'Favorites', href: "/favorites"},
 			{ divider: true },
-			{ heading: 'Notebooks', href: "/notebooks" },
+			{ heading: 'Notebooks', href: "/notebooks", hide_btn: true },
 			{ treeview: true, data: this.notebooks },
 			{ icon: 'add', text: 'Create new notebook' },
 			{ divider: true },

@@ -1,5 +1,5 @@
 <template>
-	<NoteView :notes="notes" :selected_note_index="selected_note_index"></NoteView>
+	<NoteView :title="filteredViewTitle" :notes="notes" :selected_note_index="selected_note_index"></NoteView>
 </template>
 
 <script>
@@ -33,20 +33,24 @@
 	export default {
 		data: () => ({
 			notes: [],
-			selected_note_index: null
+			selected_note_index: null,
+			filteredViewTitle: "Notes"
 		}),
 		props: ['notebook_id', 'tag_id', 'selected_note_id'],
 		methods: {
 			get_notes(notebook_id, tag_id, selected_note_id) {
 				this.notes = []
 				this.selected_note_index = null
-				var allNotes = require('../../dummy/notes.json');
+				if (this.notebook_id >= 0 && this.notebook_id != null) {
+					this.filteredViewTitle = 'Notes in "' + this.$root.getNotebookById(this.notebook_id).title + '"'
+				}
+				var allNotes = this.$root.notes
 				var shouldAdd = true
 				var tests = [
-					(note) => {
+					(note) => { // Notebook Test
 						return isGood(notebook_id, note.notebook)
 					},
-					(note) => {
+					(note) => { // Tag Test
 						return isGoodArray(tag_id, note.tags)
 					}
 				]

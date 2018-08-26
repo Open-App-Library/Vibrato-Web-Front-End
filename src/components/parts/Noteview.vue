@@ -3,7 +3,7 @@
 	<v-flex xs3 class="note_column" :id="$root.darkmode ? 'dark_column' : 'light_column'">
 		<v-list :three-line="!$root.compactmode">
 			<v-subheader>
-				Notes
+				{{title}}
 			</v-subheader>
 			<v-list-tile v-if="notes.length == 0">
 				<v-list-tile-content>
@@ -24,8 +24,8 @@
 					<v-list-tile-action>
 						<v-list-tile-action-text>{{ note.date_created }}</v-list-tile-action-text>
 						<v-icon
-							@click.stop.prevent="toggleFavorite(index)"
-							:color="favorites.includes(index) ? 'yellow darken-2' : 'grey lighten-1'"
+							@click.stop.prevent="note.is_favorited = !note.is_favorited"
+							:color="note.is_favorited ? 'yellow darken-2' : 'grey lighten-1'"
 							>
 							star
 						</v-icon>
@@ -91,7 +91,7 @@
 
 	export default {
 		name: 'home',
-		props: ['notes', 'selected_note_index'],
+		props: ['notes', 'selected_note_index', 'title'],
 		data: () => ({
 			favorites: [],
 			simplemde: null,

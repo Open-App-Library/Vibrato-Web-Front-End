@@ -1,7 +1,7 @@
 <template>
 <div class="tree-view">
 	<li>
-		<v-list-tile v-if="model.title != 'ROOT'" :to="model.href ? model.href : ''"> <!-- Click This To Access Node -->
+		<v-list-tile :to="model.href ? model.href : ''"> <!-- Click This To Access Node -->
 			<v-list-tile-action>
 				<v-btn v-if="isFolder" v-on:click.stop.prevent="toggle" flat icon>
 					<v-icon>keyboard_arrow_{{open ? 'down' : 'right'}}</v-icon>
@@ -11,7 +11,7 @@
 				<v-list-tile-title>{{model.title}}</v-list-tile-title>
 			</v-list-tile-content>
 		</v-list-tile>
-		<ul v-show="shouldShow(model.title)" :class="{root_ul: model.title == 'ROOT'}">
+		<ul v-show="this.open"">
 			<Treeview
 				v-for="(model, index) in model.children"
 				:key="index"
@@ -25,7 +25,7 @@
 <script>
 export default {
   name: 'Treeview',
-	props: ['model'],
+	props: ['model', 'is_root'],
 	data: () => ({
 		open: false
 	}),
@@ -48,7 +48,7 @@ export default {
 			})
 		},
 		shouldShow(model_name) {
-			if (model_name == "ROOT") {
+			if (model_name == "All Notebooks") {
 				return true
 			} else if (this.open) {
 				return true
@@ -62,6 +62,11 @@ export default {
 			return this.model.children && this.model.children.length
 		}
 	},
+	created() {
+		if (this.is_root) {
+			this.open = true
+		}
+	}
 }
 </script>
 

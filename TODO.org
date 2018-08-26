@@ -2,6 +2,8 @@
 
 * Path to minimum viable product [0%]
 
+** TODO Add controls to AllNotes view
+
 ** TODO Create '/notebooks' page to show overview of all notebooks
 
 ** TODO Create '/tags' page to show a tag overview (wordcloud)
@@ -10,7 +12,13 @@
 
 ** TODO Create '/settings' page
 
+** TODO Separate Note editor from note view and add a global selected_note_id variable
+
+** TODO Create 'Create new notebook' button
+
 ** TODO Create fuzzy search feature
+
+** TODO When you click a notebook, also display notes of children
 
 ** TODO Create login/logout feature
 

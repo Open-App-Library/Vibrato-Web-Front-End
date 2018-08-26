@@ -8,11 +8,11 @@
 			{"title": "Summer Recipes", "is_public": false, "id": 4},
 			{"title": "Winter Recipes", "is_public": false, "id": 5},
 			{
-				"title": "Easy Recipes", "is_public": false, "id": 5,
+				"title": "Easy Recipes", "is_public": false, "id": 6,
 				"children": [
-					{"title": "Breakfast", "is_public": false, "id": 6},
-					{"title": "Lunch", "is_public": false, "id": 7},
-					{"title": "Dinner", "is_public": false, "id": 8}
+					{"title": "Breakfast", "is_public": false, "id": 7},
+					{"title": "Lunch", "is_public": false, "id": 8},
+					{"title": "Dinner", "is_public": false, "id": 9}
 				]
 			}
 		]

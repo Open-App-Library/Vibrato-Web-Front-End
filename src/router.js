@@ -4,6 +4,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
 import AllNotes from './views/AllNotes.vue'
+import FavoriteNotes from './views/FavoriteNotes.vue'
 
 Vue.use(Router)
 Vue.use(Vuetify)
@@ -16,7 +17,12 @@ export default new Router({
 		{
 			path: '/',
 			name: 'all-notes',
-			component: AllNotes
+			component: AllNotes,
+		},
+		{
+			path: '/favorites',
+			name: 'favorites',
+			component: FavoriteNotes,
 		},
 		{
 			path: '/note/:id',

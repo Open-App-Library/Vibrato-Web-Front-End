@@ -1,34 +1,9 @@
 <template>
 	<v-container>
 		<v-layout wrap>
-			<v-flex xs3 v-for="notebook in notebooks" :key="notebook.id">
-				<v-card color="blue">
-					<v-card-text height="400">
-						<v-container
-							fill-height
-							fluid
-							pa-2
-						>
-							<v-layout fill-height>
-								<v-flex xs12 align-end flexbox>
-									<span class="headline white--text">{{notebook.title}}</span>
-								</v-flex>
-							</v-layout>
-						</v-container>
-					</v-card-text>
-
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn icon>
-							<v-icon>favorite</v-icon>
-						</v-btn>
-						<v-btn icon>
-							<v-icon>bookmark</v-icon>
-						</v-btn>
-						<v-btn icon>
-							<v-icon>share</v-icon>
-						</v-btn>
-					</v-card-actions>
+			<v-flex xs3 v-for="notebook in $root.notebooks" :key="notebook.id">
+				<v-card class="notebook-card">
+					<h2 class="notebook-title">{{notebook.title}}</h2>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -36,13 +11,23 @@
 </template>
 
 <script>
-	const dummy_notebooks = require('../../dummy/notebooks.json')
 	export default {
 		data: () => ({
-			notebooks: []
 		}),
 		created() {
-			this.notebooks = dummy_notebooks
 		}
 	}
 </script>
+
+<style lang="sass" scoped>
+.notebook-card
+	display: flex
+	width: 250px
+	height: 250px
+	align-items: center
+	padding: 15px
+	margin: 15px auto
+	justify-content: center
+	.notebook-title
+		text-align: center
+</style>
