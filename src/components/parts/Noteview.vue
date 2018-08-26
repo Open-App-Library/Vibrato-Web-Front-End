@@ -18,7 +18,7 @@
 					@click="selectNote(index)"
 					>
 					<v-list-tile-content>
-						<v-list-tile-title class="text--primary">{{ note.title}} </v-list-tile-title>
+						<v-list-tile-title class="text--primary">{{ note.title.trim() == '' ? 'Untitled' : note.title }} </v-list-tile-title>
 						<v-list-tile-sub-title>{{ getDescription(note.text) }}</v-list-tile-sub-title>
 					</v-list-tile-content>
 					<v-list-tile-action>
@@ -51,7 +51,7 @@
 
 				<v-btn-toggle
 					class="transparent"
-				>
+					>
 					<v-btn
 						:value="curNote.is_favorited"
 						@click="toggleFavorited()"
@@ -67,39 +67,68 @@
 				</v-btn-toggle>
 			</v-toolbar>
 		<!-- Note Editing Bar END -->
+
 		<v-container id="note_container">
 			<div v-if="local_note_index != null" id="the_editor">
-				<!-- The Title Input -->
-				<v-text-field
-					placeholder="Title"
-					class="headline"
-					:value="curNote.title"
-					@input="e => notes[local_note_index].title = e"
-					></v-text-field>
+				<!-- The title Input -->
+					<v-text-field
+						placeholder="Title"
+						class="headline"
+						:value="curNote.title"
+						@input="e => notes[local_note_index].title = e"
+						></v-text-field>
+				<!-- The title Input END -->
 
-				<v-tabs right id="editor-tabs">
-					<v-tab @click="markdown_mode = false">
-						Fancy
-					</v-tab>
-					<v-tab @click="markdown_mode = true">
-						Markdown
-					</v-tab>
+				<!-- Tags -->
+					<v-combobox
+						v-model="chips"
+						:items="items"
+						label="Tags"
+						flat
+						chips
+						clearable
+						solo
+						multiple
+					>
+						<template slot="selection" slot-scope="data">
+							<v-chip
+								:selected="data.selected"
+								close
+								@input="remove(data.item)"
+							>
+								<strong>{{ data.item }}</strong>&nbsp;
+								<span>(interest)</span>
+							</v-chip>
+						</template>
+					</v-combobox>
+				<!-- Tags END -->
 
-					<v-tab-item>
-						<VueEditor
-							:editorToolbar="editor_toolbar"
-							:value="selected_note_html"
-							@input="e => changeNoteText('html', e)"
-							></VueEditor>
-					</v-tab-item>
-					<v-tab-item>
-						<SimpleMDE
-							:isVisible="markdown_mode"
-							:value="selected_note_markdown"
-							@input="e => changeNoteText('md', e)"
-							></SimpleMDE>
-					</v-tab-item>
-				</v-tabs>
+				<!-- Editor -->
+					<v-tabs right id="editor-tabs">
+						<v-tab @click="markdown_mode = false">
+							Fancy
+						</v-tab>
+						<v-tab @click="markdown_mode = true">
+							Markdown
+						</v-tab>
+
+						<v-tab-item>
+							<VueEditor
+								:editorToolbar="editor_toolbar"
+								:value="selected_note_html"
+								@input="e => changeNoteText('html', e)"
+								></VueEditor>
+						</v-tab-item>
+						<v-tab-item>
+							<SimpleMDE
+								:isVisible="markdown_mode"
+								:value="selected_note_markdown"
+								@input="e => changeNoteText('md', e)"
+								></SimpleMDE>
+						</v-tab-item>
+					</v-tabs>
+				<!-- Editor END -->
+
 			</div>
 			<div v-else>
 				No Note selected
