@@ -45,6 +45,7 @@
 					:items="availible_notebooks"
 					label="Notebook"
 					hide-details
+					hint="Notebook associated with note"
 				></v-overflow-btn>
 
 				<v-divider vertical></v-divider>
@@ -82,8 +83,9 @@
 				<!-- Tags -->
 					<v-combobox
 						v-model="chips"
-						:items="items"
+						:items="availible_tags"
 						label="Tags"
+						background-color="transparent"
 						flat
 						chips
 						clearable
@@ -97,7 +99,6 @@
 								@input="remove(data.item)"
 							>
 								<strong>{{ data.item }}</strong>&nbsp;
-								<span>(interest)</span>
 							</v-chip>
 						</template>
 					</v-combobox>
