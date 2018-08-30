@@ -1,12 +1,12 @@
 #+title: Vibrato Web Front-End TODO List
 
-* Path to minimum viable product [0%]
+* Path to minimum viable product [9%]
 
-** TODO Add controls to AllNotes view
+** DONE Add controls to AllNotes view
 
 ** TODO Create '/notebooks' page to show overview of all notebooks
 
-** TODO Create '/tags' page to show a tag overview (wordcloud)
+** TODO Create '/tags' page to show a tag overview
 
 ** TODO Create '/trash' page to show deleted notes
 

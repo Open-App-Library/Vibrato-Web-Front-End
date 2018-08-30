@@ -40,33 +40,107 @@
 	</v-flex>
 	<v-flex xs9 class="note_edit_column">
 		<!-- Note Editing Bar -->
-			<v-toolbar v-if="local_note_index != null" flat dense color="white">
-				<v-overflow-btn
-					:items="availible_notebooks"
-					label="Notebook"
-					hide-details
-					hint="Notebook associated with note"
-				></v-overflow-btn>
+		<v-toolbar v-if="local_note_index != null" flat dense color="white">
+			<!-- <v-overflow-btn -->
+			<!--		:items="availible_notebooks" -->
+			<!--		label="Notebook" -->
+			<!--		hide-details -->
+			<!--		hint="Notebook associated with note" -->
+			<!-- ></v-overflow-btn> -->
+			
+			<v-dialog v-model="is_showing_notebook_dialog" scrollable max-width="300px">
+				<v-btn slot="activator" small flat>
+					<template v-if="isValidNotebook(curNote.notebook)">
+						<strong>Notebook</strong>: {{ $root.getNotebookById(curNote.notebook).title }}
+					</template>
+					<template v-else>
+						Default Notebook
+					</template>
+				</v-btn>
+				<v-card>
+					<v-card-title>Select Notebook</v-card-title>
+					<v-divider></v-divider>
+					<v-card-text style="height: 300px;">
+						<v-radio-group v-model="notes[local_note_index].notebook" column>
+							<v-radio label="Default Notebook" :value="null"></v-radio>
+							<v-radio v-for="notebook in $root.notebooks_all" :label="notebook.title" :value="notebook.id"></v-radio>
+						</v-radio-group>
+					</v-card-text>
+					<v-divider></v-divider>
+					<v-card-actions>
+						<v-btn color="blue darken-1" flat @click.native="is_showing_notebook_dialog = false">Close</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+			
+			<v-dialog v-model="is_showing_tags_dialog" scrollable max-width="300px">
+				<v-btn slot="activator" small flat>
+					Edit Tags
+				</v-btn>
+				<v-card>
+					<v-card-title>Select Tags</v-card-title>
+					<v-divider></v-divider>
+					<v-card-text style="height: 300px;">
+						<v-checkbox
+							v-for="tag in $root.tags"
+							v-model="notes[local_note_index].tags"
+							:label="tag.title"
+							:value="tag.id"
+							hide-details
+						></v-checkbox>
+						<v-text-field
+							label="Add a new tag"
+							v-model="new_tag_field"
+							@keyup.enter.native="e => pushNewTag(e)"
+						></v-text-field>
+					</v-card-text>
+					<v-divider></v-divider>
+					<v-card-actions>
+						<v-btn color="blue darken-1" flat @click.native="is_showing_tags_dialog = false">Close</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 
-				<v-divider vertical></v-divider>
-
-				<v-btn-toggle
-					class="transparent"
-					>
-					<v-btn
-						:value="curNote.is_favorited"
-						@click="toggleFavorited()"
-						flat
-						class="notTransparent"
-					>
-						<v-icon :color="curNoteFavoritedColor">star</v-icon>
-					</v-btn>
+			<!-- Tags -->
+			<!-- <v-combobox -->
+			<!--		v-model="notes[local_note_index].tags" -->
+			<!--		:items="availible_tags" -->
+			<!--		label="Tags" -->
+			<!--		background-color="transparent" -->
+			<!--		flat -->
+			<!--		clearable -->
+			<!--		solo -->
+			<!--		multiple -->
+			<!--		hide-details -->
+			<!-- > -->
+				<!--		<template slot="selection" slot-scope="data"> -->
+					<!--			<v-chip -->
+					<!--				:selected="data.selected" -->
+					<!--				close -->
+					<!--				@input="remove(data.item)" -->
+					<!--			> -->
+						<!--				<strong>{{ data.item }}</strong>&nbsp; -->
+						<!--			</v-chip> -->
+					<!--		</template> -->
+				<!-- </v-combobox> -->
+			<v-spacer></v-spacer>
+			<!-- Tags END -->
+			<v-divider vertical></v-divider>
+			<v-btn-toggle class="transparent">
+				<v-btn
+					:value="curNote.is_favorited"
+					@click="toggleFavorited()"
+					flat
+					class="notTransparent"
+				>
+					<v-icon :color="curNoteFavoritedColor">star</v-icon>
+				</v-btn>
 
 					<v-btn :value="4" flat>
-						<v-icon>delete</v-icon>
-					</v-btn>
-				</v-btn-toggle>
-			</v-toolbar>
+				<v-icon>delete</v-icon>
+			</v-btn>
+			</v-btn-toggle>
+		</v-toolbar>
 		<!-- Note Editing Bar END -->
 
 		<v-container id="note_container">
@@ -79,30 +153,6 @@
 						@input="e => notes[local_note_index].title = e"
 						></v-text-field>
 				<!-- The title Input END -->
-
-				<!-- Tags -->
-					<v-combobox
-						v-model="chips"
-						:items="availible_tags"
-						label="Tags"
-						background-color="transparent"
-						flat
-						chips
-						clearable
-						solo
-						multiple
-					>
-						<template slot="selection" slot-scope="data">
-							<v-chip
-								:selected="data.selected"
-								close
-								@input="remove(data.item)"
-							>
-								<strong>{{ data.item }}</strong>&nbsp;
-							</v-chip>
-						</template>
-					</v-combobox>
-				<!-- Tags END -->
 
 				<!-- Editor -->
 					<v-tabs right id="editor-tabs">
@@ -146,7 +196,7 @@
 
 	// Useful for quickly JSON.stringify'ing
 	// function s(str) {
-	// 		return JSON.stringify(str)
+	//			return JSON.stringify(str)
 	// }
 
 	export default {
@@ -165,6 +215,9 @@
 				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				['image', 'code-block']
 			],
+			is_showing_notebook_dialog: false,
+			is_showing_tags_dialog: false,
+			new_tag_field: "",
 		}),
 		methods: {
 			toggleFavorited() {
@@ -212,6 +265,19 @@
 				if (this.curNote.text != markdown || force) {
 					this.curNote.text = markdown
 				}
+			},
+			isValidNotebook(id) {
+				if (id == null) return false
+				if (isNaN(id)) return false
+				if (!this.$root.getNotebookById(id)) return false
+				return true
+			},
+			pushNewTag(event) {
+				this.notes[this.local_note_index].tags.push(
+					this.$root.addNewTag(this.new_tag_field)
+				)
+				this.new_tag_field = ""
+				event.target.blur()
 			}
 		},
 		computed: {
@@ -231,7 +297,7 @@
 			availible_tags() {
 				var tags = []
 				for (var tag of this.$root.tags) {
-					tags.push({text: tag.title, id: tag.id})
+					tags.push(tag.title)
 				}
 				return tags
 			}
