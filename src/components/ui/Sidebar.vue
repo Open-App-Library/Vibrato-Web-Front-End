@@ -2,11 +2,10 @@
 <v-navigation-drawer
 	id="vibrato_sidebar"
 	enable-resize-watcher
-	fixed
-	permanent
 	clipped
 	:class="$root.chooseClasses('grey lighten-4')"
 	app
+	v-model="$root.show_sidebar"
 	>
 	<v-list
 		dense
@@ -28,7 +27,7 @@
 			<v-divider v-else-if="item.divider" dark class="my-3"></v-divider>
 
 			<Treeview :is_root="true" v-else-if="item.treeview" :model="item.data"></Treeview>
-			<Listview v-else-if="item.listview" :items="item.data"></Listview>
+			<Tagview v-else-if="item.tagview" :tags="item.data"></Tagview>
 
 			<v-list-tile v-else :to="item.href ? item.href : ''">
 				<v-list-tile-action>
@@ -48,7 +47,7 @@
 
 <script>
 import Treeview from '@/components/parts/Treeview.vue'
-import Listview from '@/components/parts/Listview.vue'
+import Tagview from '@/components/parts/Tagview.vue'
 
 export default {
 	name: 'Sidebar',
@@ -59,12 +58,6 @@ export default {
 			href: '/notebooks',
 			children: null
 		},
-		tags: [
-			{name: "2018", icon: "label", href: "/tag/1"},
-			{name: "2017", icon: "label", href: "/tag/2"},
-			{name: "2016", icon: "label", href: "/tag/3"},
-			{name: "2015", icon: "label", href: "/tag/4"},
-		]
 	}),
 	methods: {
 		load_notebooks() {
@@ -86,7 +79,7 @@ export default {
 	},
 	components: {
 		Treeview,
-		Listview
+		Tagview
 	},
 	created() {
 		this.layout = [
@@ -100,7 +93,7 @@ export default {
 			{ icon: 'add', text: 'Create new notebook' },
 			{ divider: true },
 			{ heading: 'Tags' },
-			{ listview: true, data: this.tags },
+			{ tagview: true, data: this.$root.tags },
 			{ icon: 'add', text: 'Create new tag' },
 			{ divider: true },
 			{ icon: 'delete', text: 'Trash' },

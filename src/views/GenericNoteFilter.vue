@@ -1,5 +1,18 @@
 <template>
-	<NoteView :title="filteredViewTitle" :notes="notes" :selected_note_index="selected_note_index"></NoteView>
+<NoteView :notes="notes" :selected_note_index="selected_note_index">
+	<v-toolbar dense flat v-if="notebook_id" color="white">
+		<v-toolbar-title>{{rawTitle}}</v-toolbar-title>
+
+		<v-spacer></v-spacer>
+
+		<v-btn icon>
+			<v-icon>edit</v-icon>
+		</v-btn>
+	</v-toolbar>
+	<v-subheader v-else>
+		{{filteredViewTitle}}
+	</v-subheader>
+</NoteView>
 </template>
 
 <script>
@@ -15,6 +28,7 @@
 		return true
 	}
 	function isGood(parameter, value) {
+		// If value == parameter return true
 		if (parameter) {
 			if (value != parameter) {
 				return false
@@ -23,17 +37,21 @@
 		return true
 	}
 	function isGoodArray(parameter, array) {
-		for (var value in array) {
-			if (!isGood(parameter, value)) {
-				return false
+		// if value in array
+		if (!parameter) return true // Don't bother if a parameter was not supplied
+		var good_count = 0
+		for (var value of array) {
+			if (isGood(parameter, value)) {
+				good_count++
 			}
 		}
-		return true
+		return good_count > 0 ? true : false
 	}
 	export default {
 		data: () => ({
 			notes: [],
 			selected_note_index: null,
+			rawTitle: "",
 			filteredViewTitle: "Notes"
 		}),
 		props: ['notebook_id', 'tag_id', 'selected_note_id'],
@@ -42,7 +60,11 @@
 				this.notes = []
 				this.selected_note_index = null
 				if (this.notebook_id >= 0 && this.notebook_id != null) {
-					this.filteredViewTitle = 'Notes in "' + this.$root.getNotebookById(this.notebook_id).title + '"'
+					this.rawTitle = this.$root.getNotebookById(this.notebook_id).title
+					this.filteredViewTitle = 'Notes in "' + this.rawTitle + '"'
+				} else if (this.tag_id >= 0 && this.tag_id != null) {
+					this.rawTitle = this.$root.getTagById(this.tag_id).title
+					this.filteredViewTitle = 'Notes tagged "' + this.rawTitle + '"'
 				}
 				var allNotes = this.$root.notes
 				var shouldAdd = true
@@ -72,15 +94,7 @@
 		},
 		created() {
 			this.get_notes(this.notebook_id, this.tag_id, this.selected_note_id)
-		},
-		beforeRouteUpdate(to, from, next) {
-			// this.get_notes(
-			// 	to.params.notebook_id,
-			// 	to.params.tag_id,
-			// 	to.params.selected_note_id
-			// )
-			next()
-		},
+		}
 	}
 </script>
 

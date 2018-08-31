@@ -1,8 +1,10 @@
 #+title: Vibrato Web Front-End TODO List
 
-* Path to minimum viable product [9%]
+* Path to minimum viable product [8%]
 
 ** DONE Add controls to AllNotes view
+
+** TODO Create New Note Page
 
 ** TODO Create '/notebooks' page to show overview of all notebooks
 

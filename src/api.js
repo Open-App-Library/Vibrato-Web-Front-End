@@ -4,7 +4,8 @@ var global_data = {
 	compactmode: false,
 	notes: null,
 	notebooks: null,
-	tags: null
+	tags: null,
+	show_sidebar: true
 }
 
 var global_methods = {
@@ -28,11 +29,20 @@ var global_methods = {
 		}
 		return null
 	},
-	getNotebookById(id, search_array=null) {
+	getNotebookById(id) {
 		if (id == null) return null
 		return this.recurseNotebooks(function(notebook) {
 			return notebook.id == id
 		})
+	},
+	getTagById(id) {
+		if (id == null) return null
+		for (var tag of this.tags) {
+			if (tag.id == id) {
+				return tag
+			}
+		}
+		return null
 	},
 	addNewTag(new_tag_label) {
 		new_tag_label = new_tag_label.trim()

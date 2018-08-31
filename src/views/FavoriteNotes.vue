@@ -1,5 +1,5 @@
 <template>
-	<NoteView title="Your Favorited Notes" :notes="notes"></NoteView>
+	<NoteView title="Favorited Notes" :notes="notes"></NoteView>
 </template>
 
 <script>

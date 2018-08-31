@@ -2,7 +2,8 @@
 <v-layout fill-height>
 	<v-flex xs3 class="note_column" :id="$root.darkmode ? 'dark_column' : 'light_column'">
 		<v-list :three-line="!$root.compactmode">
-			<v-subheader>
+			<slot></slot>
+			<v-subheader v-if="title">
 				{{title}}
 			</v-subheader>
 			<v-list-tile v-if="notes.length == 0">
@@ -40,14 +41,8 @@
 	</v-flex>
 	<v-flex xs9 class="note_edit_column">
 		<!-- Note Editing Bar -->
-		<v-toolbar v-if="local_note_index != null" flat dense color="white">
-			<!-- <v-overflow-btn -->
-			<!--		:items="availible_notebooks" -->
-			<!--		label="Notebook" -->
-			<!--		hide-details -->
-			<!--		hint="Notebook associated with note" -->
-			<!-- ></v-overflow-btn> -->
-			
+		<v-toolbar v-if="local_note_index != null" flat dense :color="$root.chooseClasses('white')">
+
 			<v-dialog v-model="is_showing_notebook_dialog" scrollable max-width="300px">
 				<v-btn slot="activator" small flat>
 					<template v-if="isValidNotebook(curNote.notebook)">
@@ -72,7 +67,7 @@
 					</v-card-actions>
 				</v-card>
 			</v-dialog>
-			
+
 			<v-dialog v-model="is_showing_tags_dialog" scrollable max-width="300px">
 				<v-btn slot="activator" small flat>
 					Edit Tags
@@ -101,28 +96,6 @@
 				</v-card>
 			</v-dialog>
 
-			<!-- Tags -->
-			<!-- <v-combobox -->
-			<!--		v-model="notes[local_note_index].tags" -->
-			<!--		:items="availible_tags" -->
-			<!--		label="Tags" -->
-			<!--		background-color="transparent" -->
-			<!--		flat -->
-			<!--		clearable -->
-			<!--		solo -->
-			<!--		multiple -->
-			<!--		hide-details -->
-			<!-- > -->
-				<!--		<template slot="selection" slot-scope="data"> -->
-					<!--			<v-chip -->
-					<!--				:selected="data.selected" -->
-					<!--				close -->
-					<!--				@input="remove(data.item)" -->
-					<!--			> -->
-						<!--				<strong>{{ data.item }}</strong>&nbsp; -->
-						<!--			</v-chip> -->
-					<!--		</template> -->
-				<!-- </v-combobox> -->
 			<v-spacer></v-spacer>
 			<!-- Tags END -->
 			<v-divider vertical></v-divider>

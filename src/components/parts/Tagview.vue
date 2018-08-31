@@ -1,12 +1,12 @@
 <template>
-<div class="list-view">
+<div class="tag-view">
 	<v-list>
-		<v-list-tile v-for="(item, index) in items" :key="index" :to="item.href ? item.href : ''">
+		<v-list-tile v-for="tag in tags" :key="tag.id" :to="'/tag/'+tag.id">
 			<v-list-tile-action>
-				<v-icon>{{item.icon}}</v-icon>
+				<v-icon>label</v-icon>
 			</v-list-tile-action>
 			<v-list-tile-content>
-				<v-list-tile-title>{{item.name}}</v-list-tile-title>
+				<v-list-tile-title>{{tag.title}}</v-list-tile-title>
 			</v-list-tile-content>
 		</v-list-tile>
 	</v-list>
@@ -16,7 +16,7 @@
 <script>
 export default {
   name: 'Treeview',
-	props: ['items'],
+	props: ['tags', 'global_icon'],
 	methods: {
 		toggle() {
 			if (this.isFolder) {
@@ -52,8 +52,3 @@ export default {
 	},
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="sass">
-
-</style>

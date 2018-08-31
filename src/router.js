@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
-import AllNotes from './views/AllNotes.vue'
+import GenericNoteFilter from './views/GenericNoteFilter.vue'
 import FavoriteNotes from './views/FavoriteNotes.vue'
 
 Vue.use(Router)
@@ -17,7 +17,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'all-notes',
-			component: AllNotes,
+			component: GenericNoteFilter,
 		},
 		{
 			path: '/favorites',
@@ -27,19 +27,25 @@ export default new Router({
 		{
 			path: '/note/:id',
 			name: 'single-note',
-			component: AllNotes
+			component: GenericNoteFilter
 		},
 		{
 			path: '/notebook/:notebook_id',
 			name: 'single-notebook',
 			props: true,
-			component: AllNotes
+			component: GenericNoteFilter
 		},
 		{
 			path: '/notebooks',
 			name: 'notebooks',
 			component: () => import(/* webpackChunkName: "notebooks" */ './views/Notebooks.vue')
-		}
+		},
+		{
+			path: '/tag/:tag_id',
+			name: 'single-tag',
+			props: true,
+			component: GenericNoteFilter
+		},
 		// {
 		// 	path: '/about',
 		// 	name: 'about',

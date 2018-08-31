@@ -9,6 +9,13 @@
 	flat
 	fixed
 	>
+	<v-icon
+		id="hamburger_menu"
+		v-if="!$root.show_sidebar"
+		@click="$root.show_sidebar = !$root.show_sidebar"
+	>
+		menu
+	</v-icon>
 	<router-link id="logo_link" to="/"><img id="logo" src="../../assets/logo.svg"></router-link>
 	<v-spacer></v-spacer>
 	<v-text-field
@@ -91,6 +98,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
 #vibrato-toolbar
+	#hamburger_menu
+		margin-right: 15px
 	#logo_link
 		padding: 5px 0
 		max-height: 38px
