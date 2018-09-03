@@ -70,15 +70,16 @@ var global_methods = {
 		 * then restructure notebooks object to correct order */
 		var have_moved_notebook = false
 		var have_deleted_old_entry = false
-		this.notebooks = this.recurseNotebooks(function(notebook) {
-			notebook_list.push(notebook)
-			if (notebook.id == selected_notebook.id) {
-				delete notebook
-			}
+		var newNotebookObject = []
+		this.recurseNotebooks(function(notebook) {
 			if (notebook.id == selected_notebook.parent) {
 				notebook.children.push(selected_notebook)
 			}
+			if (notebook.id != selected_notebook.id) {
+				newNotebookObject.push(notebook)
+			}
 		})
+		this.notebooks = newNotebookObject
 	}
 }
 

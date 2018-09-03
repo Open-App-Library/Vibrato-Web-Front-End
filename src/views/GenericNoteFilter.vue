@@ -132,8 +132,10 @@
 				return children_list
 			},
 			selectNewParentNotebook(parent_id) {
+				console.log("selecting new parent notebook")
 				this.selected_notebook.parent = parent_id
-				this.$root.reorderNotebooks()
+				this.$root.reorderNotebook(this.selected_notebook)
+				console.log("done selecting new parent notebook")
 			}
 		},
 		computed: {
