@@ -65,7 +65,21 @@ var global_methods = {
 			return light_classes
 		}
 	},
-
+	reorderNotebook(selected_notebook) {
+		/* Take a Notebook ID that has had its parent changed and
+		 * then restructure notebooks object to correct order */
+		var have_moved_notebook = false
+		var have_deleted_old_entry = false
+		this.notebooks = this.recurseNotebooks(function(notebook) {
+			notebook_list.push(notebook)
+			if (notebook.id == selected_notebook.id) {
+				delete notebook
+			}
+			if (notebook.id == selected_notebook.parent) {
+				notebook.children.push(selected_notebook)
+			}
+		})
+	}
 }
 
 var global_computed = {

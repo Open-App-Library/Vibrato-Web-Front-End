@@ -8,7 +8,7 @@
 				</v-btn>
 			</v-list-tile-action>
 			<v-list-tile-content>
-				<v-list-tile-title>{{model.title}}</v-list-tile-title>
+				<v-list-tile-title>{{model.title ? model.title : "Untitled Notebook"}} -  {{JSON.stringify(model.parent)}}</v-list-tile-title>
 			</v-list-tile-content>
 		</v-list-tile>
 		<ul v-show="this.open"">
