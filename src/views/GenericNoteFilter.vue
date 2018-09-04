@@ -1,7 +1,7 @@
 <template>
 <NoteView :notes="notes" :selected_note_index="selected_note_index">
 	<v-toolbar dense flat v-if="notebook_id" color="white">
-		<v-toolbar-title>{{selected_notebook.title ? selected_notebook.title : "Untitled Notebook"}}</v-toolbar-title>
+		<v-toolbar-title>{{selected_notebook.title ? selected_notebook.title : "Untitled Notebook"}} - {{selected_notebook.id}}</v-toolbar-title>
 
 		<v-spacer></v-spacer>
 
@@ -132,10 +132,8 @@
 				return children_list
 			},
 			selectNewParentNotebook(parent_id) {
-				console.log("selecting new parent notebook")
 				this.selected_notebook.parent = parent_id
 				this.$root.reorderNotebook(this.selected_notebook)
-				console.log("done selecting new parent notebook")
 			}
 		},
 		computed: {

@@ -26,7 +26,7 @@
 
 			<v-divider v-else-if="item.divider" dark class="my-3"></v-divider>
 
-			<Treeview :is_root="true" v-else-if="item.treeview" :object="$root.notebooks"></Treeview>
+			<NotebookTree :is_root="true" v-else-if="item.notebooktree" :notebookObject="$root.notebooks"></NotebookTree>
 			<Tagview v-else-if="item.tagview" :tags="item.data"></Tagview>
 
 			<v-list-tile v-else :to="item.href ? item.href : ''">
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import Treeview from '@/components/parts/Treeview.vue'
+import NotebookTree from '@/components/parts/NotebookTree.vue'
 import Tagview from '@/components/parts/Tagview.vue'
 
 export default {
@@ -69,7 +69,7 @@ export default {
 
 	},
 	components: {
-		Treeview,
+		NotebookTree,
 		Tagview
 	},
 	created() {
@@ -80,7 +80,7 @@ export default {
 			{ icon: 'star', text: 'Favorites', href: "/favorites"},
 			{ divider: true },
 			{ heading: 'Notebooks', href: "/notebooks", hide_btn: true },
-			{ treeview: true, data: this.$root.notebooks },
+			{ notebooktree: true, data: this.$root.notebooks },
 			{ icon: 'add', text: 'Create new notebook' },
 			{ divider: true },
 			{ heading: 'Tags' },

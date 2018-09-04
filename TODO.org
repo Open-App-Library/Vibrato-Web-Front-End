@@ -1,8 +1,10 @@
 #+title: Vibrato Web Front-End TODO List
 
-MOST IMPORTANT THING TO DO RIGHT NOW IS GET THE TREE VIEW TO UPDATE ON CHANGE.
+* Path to minimum viable product [7%]
 
-* Path to minimum viable product [8%]
+** TODO Get treeview to update on notebook change
+
+** TODO Make parent notebook show all children notebooks too
 
 ** DONE Add controls to AllNotes view
 

@@ -29,6 +29,25 @@ var global_methods = {
 		}
 		return null
 	},
+	recurseAndEditNotebooks(callback, parent_id=null, search_array=null) {
+		var notebooks = this.notebooks
+		if (search_array) notebooks = search_array
+		var new_notebook_object = []
+
+		for (var notebook of notebooks) {
+			if (!notebook.children) {
+				notebook.children = []
+			}
+			notebook = callback(notebook, parent_id)
+			if (notebook) {
+				if (notebook.children) {
+					notebook.children = this.recurseAndEditNotebooks(callback, notebook.id, notebook.children)
+				}
+				new_notebook_object.push(notebook)
+			}
+		}
+		return new_notebook_object
+	},
 	getNotebookById(id) {
 		if (id == null) return null
 		return this.recurseNotebooks(function(notebook) {
@@ -66,23 +85,20 @@ var global_methods = {
 		}
 	},
 	reorderNotebook(selected_notebook) {
-		/* Take a Notebook ID that has had its parent changed and
-		 * then restructure notebooks object to correct order */
-		var have_moved_notebook = false
-		var have_deleted_old_entry = false
-		var newNotebookObject = []
-		this.recurseNotebooks(function(notebook) {
+		var new_notebooks = this.recurseAndEditNotebooks(function(notebook, active_parent) {
+			if (notebook.id == selected_notebook.id && notebook.parent != active_parent) {
+				console.log("removing bad parent")
+				return null
+			}
 			if (notebook.id == selected_notebook.parent) {
-				if (!notebook.children) {
-					notebook.children = []
-				}
 				notebook.children.push(selected_notebook)
 			}
-			if (notebook.id != selected_notebook.id) {
-				newNotebookObject.push(notebook)
-			}
+			return notebook
 		})
-		this.notebooks = newNotebookObject
+		if (selected_notebook.parent == null) {
+			new_notebooks.push(selected_notebook)
+		}
+		this.notebooks = new_notebooks
 		console.log(this.notebooks)
 	}
 }
