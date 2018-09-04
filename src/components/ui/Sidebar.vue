@@ -26,7 +26,7 @@
 
 			<v-divider v-else-if="item.divider" dark class="my-3"></v-divider>
 
-			<Treeview :is_root="true" v-else-if="item.treeview" :model="item.data"></Treeview>
+			<Treeview :is_root="true" v-else-if="item.treeview" :object="$root.notebooks"></Treeview>
 			<Tagview v-else-if="item.tagview" :tags="item.data"></Tagview>
 
 			<v-list-tile v-else :to="item.href ? item.href : ''">
@@ -53,17 +53,8 @@ export default {
 	name: 'Sidebar',
 	data: () => ({
 		layout: [],
-		notebooks: {
-			title: 'All Notebooks',
-			href: '/notebooks',
-			children: null
-		},
 	}),
 	methods: {
-		load_notebooks() {
-			// Dummy data!
-			this.notebooks.children = this.$root.notebooks
-		},
 		setURLs(base_url, items) {
 			// create URL 
 			for (var i in items) {
@@ -89,7 +80,7 @@ export default {
 			{ icon: 'star', text: 'Favorites', href: "/favorites"},
 			{ divider: true },
 			{ heading: 'Notebooks', href: "/notebooks", hide_btn: true },
-			{ treeview: true, data: this.notebooks },
+			{ treeview: true, data: this.$root.notebooks },
 			{ icon: 'add', text: 'Create new notebook' },
 			{ divider: true },
 			{ heading: 'Tags' },
@@ -103,10 +94,6 @@ export default {
 			{ icon: 'phonelink', text: 'Download the App!' },
 			{ icon: 'keyboard', text: 'Keyboard shortcuts' }
 		]
-
-		// Load Notebooks
-		this.load_notebooks()
-		this.setURLs('/notebook/', this.notebooks.children)
 	}
 }
 </script>

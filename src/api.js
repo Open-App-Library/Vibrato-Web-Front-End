@@ -73,6 +73,9 @@ var global_methods = {
 		var newNotebookObject = []
 		this.recurseNotebooks(function(notebook) {
 			if (notebook.id == selected_notebook.parent) {
+				if (!notebook.children) {
+					notebook.children = []
+				}
 				notebook.children.push(selected_notebook)
 			}
 			if (notebook.id != selected_notebook.id) {
@@ -80,6 +83,7 @@ var global_methods = {
 			}
 		})
 		this.notebooks = newNotebookObject
+		console.log(this.notebooks)
 	}
 }
 

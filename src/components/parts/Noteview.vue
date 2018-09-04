@@ -58,7 +58,7 @@
 					<v-card-text style="height: 300px;">
 						<v-radio-group v-model="notes[local_note_index].notebook" column>
 							<v-radio label="Default Notebook" :value="null"></v-radio>
-							<v-radio v-for="notebook in $root.notebooks_all" :label="notebook.title" :value="notebook.id"></v-radio>
+							<v-radio v-for="notebook in $root.notebooks_all" :key="notebook.id" :label="notebook.title" :value="notebook.id"></v-radio>
 						</v-radio-group>
 					</v-card-text>
 					<v-divider></v-divider>
