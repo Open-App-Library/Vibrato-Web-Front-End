@@ -15,8 +15,8 @@
 			<ul v-show="this.open">
 				<!-- Since this is a root element, notebookObject is an array and not a dictionary. -->
 				<NotebookTree
-					v-for="(notebook,index) in notebook_array"
-					:key="notebook.id"
+					v-for="(notebook,index) in notebookObject"
+					:key="index"
 					:notebookObject="notebook">
 				</NotebookTree>
 			</ul>
@@ -36,8 +36,8 @@
 			<ul v-show="this.open">
 				<!-- Since this is NOT a root element, notebookObject is a dictionary and not an array. -->
 				<NotebookTree
-					v-for="(notebook,index) in children"
-					:key="notebook.id"
+					v-for="(notebook,index) in notebookObject.children"
+					:key="index"
 					:notebookObject="notebook">
 				</NotebookTree>
 			</ul>
@@ -52,8 +52,6 @@ export default {
 	props: ['notebookObject', 'is_root'],
 	data: () => ({
 		open: false, // whether notebook is showing or hiding children
-		children: null,
-		notebook_array: null,
 	}),
 	methods: {
 		toggle() {
@@ -65,29 +63,19 @@ export default {
 	computed: {
 		isFolder() {
 			// if is_root, return true; else return true if has children property and has more than zero children
-			return this.is_root ? true : this.children && this.children.length
+			return this.is_root ? true : this.notebookObject.children && this.notebookObject.children.length
+		}
+	},
+	watch: {
+		notebookObject(newVal) {
+			console.log("NEW VAL", this.is_root ? "root" : this.notebookObject.title, JSON.stringify(newVal))
 		}
 	},
 	created() {
 		// If root element, make it open by default.
 		if (this.is_root) {
 			this.open = true
-			this.notebook_array = this.notebookObject
 		}
-		if (this.notebookObject.children) {
-			this.children = this.notebookObject.children
-		}
-	},
-	watch: {
-		notebookObject(newNotebookObject) {
-			if (this.is_root) {
-				this.notebook_array = newNotebookObject
-			}
-			if (newNotebookObject.children) {
-				this.children = newNotebookObject.children
-			}
-			console.log(this.is_root ? "root" : this.notebookObject.title, JSON.stringify(newNotebookObject))
-		},
 	}
 }
 </script>

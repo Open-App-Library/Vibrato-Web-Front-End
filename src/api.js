@@ -85,21 +85,23 @@ var global_methods = {
 		}
 	},
 	reorderNotebook(selected_notebook) {
-		var new_notebooks = this.recurseAndEditNotebooks(function(notebook, active_parent) {
+		/* Historical note: Getting the treeview to work drived me bonkers.
+		 * Turns out it was a javascript variable problem and the solution
+		 * was to convert the object into a JSON string and then parse it
+		 * back into a regular javascript variable. */
+		var new_notebooks = JSON.parse(JSON.stringify(this.recurseAndEditNotebooks(function(notebook, active_parent) {
 			if (notebook.id == selected_notebook.id && notebook.parent != active_parent) {
-				console.log("removing bad parent")
 				return null
 			}
 			if (notebook.id == selected_notebook.parent) {
 				notebook.children.push(selected_notebook)
 			}
 			return notebook
-		})
+		})))
 		if (selected_notebook.parent == null) {
 			new_notebooks.push(selected_notebook)
 		}
 		this.notebooks = new_notebooks
-		console.log(this.notebooks)
 	}
 }
 
