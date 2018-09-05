@@ -1,7 +1,7 @@
 <template>
 <NoteView :notes="notes" :selected_note_index="selected_note_index">
 	<v-toolbar dense flat v-if="notebook_id" color="white">
-		<v-toolbar-title>{{selected_notebook.title ? selected_notebook.title : "Untitled Notebook"}} - {{selected_notebook.id}}</v-toolbar-title>
+		<v-toolbar-title>{{selected_notebook.title ? selected_notebook.title : "Untitled Notebook"}}</v-toolbar-title>
 
 		<v-spacer></v-spacer>
 
@@ -75,6 +75,18 @@
 		}
 		return good_count > 0 ? true : false
 	}
+	function isGoodArrayVal(parameterArray, value) {
+		// if value in array
+		if (!parameterArray) return true // Don't bother if a parameter was not supplied
+		var good_count = 0
+		for (var parameter of parameterArray) {
+			if (isGood(parameter, value)) {
+				good_count++
+			}
+		}
+		return good_count > 0 ? true : false
+	}
+
 	export default {
 		data: () => ({
 			notes: [],
@@ -103,10 +115,18 @@
 				var shouldAdd = true
 				var tests = [
 					(note) => { // Notebook Test
-						return isGood(notebook_id, note.notebook)
+						var notebook_ids_including_children = [this.notebook_id]
+						var selected_notebook = this.$root.getNotebookById(this.notebook_id)
+						if (selected_notebook && selected_notebook.children) {
+							this.$root.recurseNotebooks(function(notebook){
+								notebook_ids_including_children.push(notebook.id)
+							}, note.notebook, selected_notebook.children)
+						}
+						console.log("checking if note.notebook", note.notebook, "is equal to any of ids", notebook_ids_including_children)
+						return isGoodArrayVal(notebook_ids_including_children, note.notebook)
 					},
 					(note) => { // Tag Test
-						return isGoodArray(tag_id, note.tags)
+						return isGoodArray(this.tag_id, note.tags)
 					}
 				]
 				for (var note of allNotes) {

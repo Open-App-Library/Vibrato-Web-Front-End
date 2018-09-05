@@ -1,8 +1,6 @@
 #+title: Vibrato Web Front-End TODO List
 
-* Path to minimum viable product [14%]
-
-** TODO Make parent notebook show all children notebooks too
+* Path to minimum viable product [21%]
 
 ** TODO Create New Note Page
 
@@ -25,6 +23,8 @@
 ** TODO Create login/logout feature
 
 ** TODO Connect with Django app
+
+** DONE Make parent notebook show all children notebooks too
 
 ** DONE Add controls to AllNotes view
 

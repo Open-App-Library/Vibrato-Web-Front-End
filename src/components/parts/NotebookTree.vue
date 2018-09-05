@@ -66,11 +66,6 @@ export default {
 			return this.is_root ? true : this.notebookObject.children && this.notebookObject.children.length
 		}
 	},
-	watch: {
-		notebookObject(newVal) {
-			console.log("NEW VAL", this.is_root ? "root" : this.notebookObject.title, JSON.stringify(newVal))
-		}
-	},
 	created() {
 		// If root element, make it open by default.
 		if (this.is_root) {
