@@ -1,6 +1,6 @@
 <template>
 <NoteView :notes="notes" :selected_note_index="selected_note_index">
-	<v-toolbar dense flat v-if="notebook_id" color="white">
+	<v-toolbar dense flat v-if="notebook_id" color="$root.chooseClasses('white')">
 		<v-toolbar-title>{{selected_notebook.title ? selected_notebook.title : "Untitled Notebook"}}</v-toolbar-title>
 
 		<v-spacer></v-spacer>
@@ -89,6 +89,7 @@
 
 	export default {
 		data: () => ({
+			all_notes: null,
 			notes: [],
 			selected_note_index: null,
 			rawTitle: "",
@@ -129,12 +130,14 @@
 					}
 				]
 				for (var note of allNotes) {
-					shouldAdd = runTests(tests, note)
-					if (shouldAdd) {
-						this.notes.push(note)
-						if (this.selected_note_id) {
-							if (note.id == selected_note_id) {
-								this.selected_note_index = selected_note_id
+					if (!note.trashed) {
+						shouldAdd = runTests(tests, note)
+						if (shouldAdd) {
+							this.notes.push(note)
+							if (this.selected_note_id) {
+								if (note.id == selected_note_id) {
+									this.selected_note_index = selected_note_id
+								}
 							}
 						}
 					}
@@ -176,8 +179,16 @@
 		components: {
 			NoteView
 		},
+		watch: {
+			// Whenever the global notes object changes ($root.notes), update the view
+			all_notes(newVal) {
+				console.log("Note change")
+				this.get_notes(this.notebook_id, this.tag_id, this.selected_note_id)
+			},
+		},
 		created() {
 			this.get_notes(this.notebook_id, this.tag_id, this.selected_note_id)
+			this.all_notes = this.$root.notes
 		}
 	}
 </script>

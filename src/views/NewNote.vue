@@ -1,9 +1,7 @@
 <template>
-<NoteView :notes="notes" :selected_note_index="selected_note_index">
-	<v-subheader>
-		Notes
-	</v-subheader>
-</NoteView>
+<div>
+This will be a distraction-free note-writing page similar to Evernote Webs'.
+</div>
 </template>
 
 <script>

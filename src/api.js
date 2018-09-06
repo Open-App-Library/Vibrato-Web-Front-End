@@ -15,6 +15,34 @@ var global_methods = {
 		this.notebooks = require('../dummy/notebooks.json')
 		this.tags = require('../dummy/tags.json')
 	},
+	saveNote(note) {
+		// TODO: Implement this function with the backend
+
+		/* This function will take a note object, send it
+		 * to the back-end, get a complete note object with
+		 * all fields filled, and then return it.
+		 *
+		 * Important Note: This function current uses placeholder
+		 * data to simulate an API call */
+
+		let curDate = this.get_date_string()
+		let default_note_template = {
+			id:  Math.floor((Math.random() * 500) + 100), // random num
+			title: "Note Title",
+			text: "",
+			user: 1,
+			date_created: curDate,
+			date_modified: curDate,
+			shared_with: null,
+			is_public: false,
+			is_favorited: false,
+			notebook: null,
+			tags: [],
+			trashed: false
+		}
+		let api_returned_note_value = Object.assign(default_note_template, note)
+		return api_returned_note_value
+	},
 	recurseNotebooks(callback, parent_id=null, search_array=null) {
 		var notebooks = this.notebooks
 		if (search_array) notebooks = search_array
@@ -102,6 +130,19 @@ var global_methods = {
 			new_notebooks.push(selected_notebook)
 		}
 		this.notebooks = new_notebooks
+	},
+	get_date_string() {
+		let today = new Date()
+		let dd = today.getDate()
+		let mm = today.getMonth()+1
+		let yyyy = today.getFullYear()
+		if(dd<10){
+			dd='0'+dd
+		}
+		if(mm<10){
+			mm='0'+mm
+		}
+		return yyyy+'-'+mm+'-'+dd
 	}
 }
 

@@ -1,7 +1,7 @@
 <template>
 <v-layout fill-height>
 	<v-flex xs3 class="note_column" :id="$root.darkmode ? 'dark_column' : 'light_column'">
-		<v-list :three-line="!$root.compactmode">
+		<v-list :three-line="!$root.compactmode" class="note-list">
 			<slot></slot>
 			<v-subheader v-if="title">
 				{{title}}
@@ -281,11 +281,7 @@
 		},
 		watch: {
 			notes(newVal) {
-				this.notes = newVal
-			},
-			selected_note_index(newVal) {
-				this.local_note_index = newVal
-				this.changeNoteText('md', this.curNote.text, true)
+				this.selectNote(0)
 			}
 		},
 		created() {
@@ -298,6 +294,8 @@
 </script>
 
 <style lang="sass">
+	.note-list
+		padding-top: 0
 	.note_column, .note_edit_column
 		max-height: calc(100vh - 50px) // 50px is the height of toolbar
 		overflow-y: scroll

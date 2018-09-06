@@ -31,11 +31,6 @@ export default new Router({
 			component: FavoriteNotes,
 		},
 		{
-			path: '/note/:id',
-			name: 'single-note',
-			component: GenericNoteFilter
-		},
-		{
 			path: '/notebook/:notebook_id',
 			name: 'single-notebook',
 			props: true,
