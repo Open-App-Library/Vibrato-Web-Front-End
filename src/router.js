@@ -4,6 +4,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
 import GenericNoteFilter from './views/GenericNoteFilter.vue'
+import NewNote from './views/NewNote.vue'
 import FavoriteNotes from './views/FavoriteNotes.vue'
 
 Vue.use(Router)
@@ -18,6 +19,11 @@ export default new Router({
 			path: '/',
 			name: 'all-notes',
 			component: GenericNoteFilter,
+		},
+		{
+			path: '/new',
+			name: 'new-note',
+			component: NewNote,
 		},
 		{
 			path: '/favorites',

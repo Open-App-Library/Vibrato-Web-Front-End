@@ -74,7 +74,7 @@ export default {
 	},
 	created() {
 		this.layout = [
-			{ icon: 'edit', text: 'Create New Note', href: "/create-or-something"},
+			{ icon: 'edit', text: 'Create New Note', href: "/new"},
 			{ divider: true },
 			{ icon: 'notes', text: 'All Notes', href: "/"},
 			{ icon: 'star', text: 'Favorites', href: "/favorites"},

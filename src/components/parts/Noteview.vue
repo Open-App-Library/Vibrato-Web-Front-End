@@ -13,7 +13,7 @@
 			</v-list-tile>
 			<template v-else v-for="(note, index) in notes">
 				<v-list-tile
-					:key="note.title"
+					:key="'note-'+index"
 					avatar
 					ripple
 					@click="selectNote(index)"

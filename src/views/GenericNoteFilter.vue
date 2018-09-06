@@ -122,7 +122,6 @@
 								notebook_ids_including_children.push(notebook.id)
 							}, note.notebook, selected_notebook.children)
 						}
-						console.log("checking if note.notebook", note.notebook, "is equal to any of ids", notebook_ids_including_children)
 						return isGoodArrayVal(notebook_ids_including_children, note.notebook)
 					},
 					(note) => { // Tag Test
