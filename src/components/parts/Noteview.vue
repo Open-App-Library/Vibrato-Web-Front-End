@@ -6,12 +6,14 @@
 			<v-subheader v-if="title">
 				{{title}}
 			</v-subheader>
+			<!-- If no notes in notes object, return a "no notes found message" -->
 			<v-list-tile v-if="notes.length == 0">
 				<v-list-tile-content>
 					<v-list-tile-title>Zero notes matched your criteria.</v-list-tile-title>
 				</v-list-tile-content>
 			</v-list-tile>
-			<template v-else v-for="(note, index) in notes">
+			<!-- Else, list the notes as normal -->
+			<template v-else v-for="(note, index) in notes" v-if="!note.trashed || show_trashed">
 				<v-list-tile
 					:key="'note-'+index"
 					avatar
@@ -19,7 +21,7 @@
 					@click="selectNote(index)"
 					>
 					<v-list-tile-content>
-						<v-list-tile-title class="text--primary">{{ note.title.trim() == '' ? 'Untitled' : note.title }} </v-list-tile-title>
+						<v-list-tile-title class="text--primary">{{ note.title.trim() == '' ? 'Untitled' : note.title }} - {{note.trashed}} </v-list-tile-title>
 						<v-list-tile-sub-title>{{ getDescription(note.text) }}</v-list-tile-sub-title>
 					</v-list-tile-content>
 					<v-list-tile-action>
@@ -42,7 +44,6 @@
 	<v-flex xs9 class="note_edit_column">
 		<!-- Note Editing Bar -->
 		<v-toolbar v-if="local_note_index != null" flat dense :color="$root.chooseClasses('white')">
-
 			<v-dialog v-model="is_showing_notebook_dialog" scrollable max-width="300px">
 				<v-btn slot="activator" small flat>
 					<template v-if="isValidNotebook(curNote.notebook)">
@@ -109,7 +110,7 @@
 					<v-icon :color="curNoteFavoritedColor">star</v-icon>
 				</v-btn>
 
-				<v-btn flat @click="notes[local_note_index].trashed = true">
+				<v-btn flat @click="trashNote(local_note_index)">
 					<v-icon>delete</v-icon>
 				</v-btn>
 			</v-btn-toggle>
@@ -174,7 +175,7 @@
 
 	export default {
 		name: 'home',
-		props: ['notes', 'selected_note_index', 'title'],
+		props: ['notes', 'selected_note_index', 'title', 'show_trashed'],
 		data: () => ({
 			favorites: [],
 			simplemde: null,
@@ -251,6 +252,10 @@
 				)
 				this.new_tag_field = ""
 				event.target.blur()
+			},
+			trashNote(arrayIndex) {
+				var note = this.notes[arrayIndex]
+				this.$set(note, 'trashed', true)
 			}
 		},
 		computed: {

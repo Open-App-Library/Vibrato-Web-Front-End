@@ -55,6 +55,14 @@ var global_methods = {
 			}
 		}
 	},
+	trashNotes(id_array, trashed_bool) {
+		// Takes an array of note IDs and the trash status.
+		for (var note of this.notes) {
+			if (id_array.includes(note.id)) {
+				note.trashed = trashed_bool
+			}
+		}
+	},
 	recurseNotebooks(callback, parent_id=null, search_array=null) {
 		var notebooks = this.notebooks
 		if (search_array) notebooks = search_array

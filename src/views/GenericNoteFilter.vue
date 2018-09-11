@@ -182,7 +182,6 @@
 		watch: {
 			// Whenever the global notes object changes ($root.notes), update the view
 			all_notes(newVal) {
-				console.log("Note change")
 				this.get_notes(this.notebook_id, this.tag_id, this.selected_note_id)
 			},
 		},
