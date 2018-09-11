@@ -5,10 +5,6 @@
 
 ** TODO Separate note editor and note list
 
-** DONE Add delete note feature
-
-** DONE Create '/trash' page to show deleted notes
-
 ** TODO Create 'Create new notebook' button
 
 ** TODO Create 'Create new tag' button
@@ -32,6 +28,10 @@
 ** TODO Create login/logout feature
 
 ** TODO Connect with Django app
+
+** DONE Add delete note feature
+
+** DONE Create '/trash' page to show deleted notes
 
 ** DONE When you click a notebook, also display notes of children
 
