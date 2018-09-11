@@ -109,9 +109,9 @@
 					<v-icon :color="curNoteFavoritedColor">star</v-icon>
 				</v-btn>
 
-					<v-btn :value="4" flat>
-				<v-icon>delete</v-icon>
-			</v-btn>
+				<v-btn flat @click="notes[local_note_index].trashed = true">
+					<v-icon>delete</v-icon>
+				</v-btn>
 			</v-btn-toggle>
 		</v-toolbar>
 		<!-- Note Editing Bar END -->

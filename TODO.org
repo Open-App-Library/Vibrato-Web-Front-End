@@ -1,11 +1,13 @@
 #+TITLE: Vibrato Web Front-End TODO List
 #+DESCRIPTION: This is the active to-do list of the Vibrato Notes Web Front-End. This does not reflect every single goal of this project but highlights the most important tasks to complete.
 
-* Path to minimum viable product [29%]
+* Path to minimum viable product [38%]
 
-** TODO Add delete note feature
+** TODO Separate note editor and note list
 
-** TODO Create '/trash' page to show deleted notes
+** DONE Add delete note feature
+
+** DONE Create '/trash' page to show deleted notes
 
 ** TODO Create 'Create new notebook' button
 
@@ -18,8 +20,6 @@
 *** TODO Create '/notebooks' page to show overview of all notebooks
 
 *** TODO Create '/tags' page to show a tag overview
-
-** Separate note editor and note list
 
 ** TODO Create fuzzy search feature
 

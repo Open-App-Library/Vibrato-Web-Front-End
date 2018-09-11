@@ -43,6 +43,18 @@ var global_methods = {
 		let api_returned_note_value = Object.assign(default_note_template, note)
 		return api_returned_note_value
 	},
+	deleteNotesWithIDs(noteIDArray) {
+		//TODO: Send noteArray to back-end API
+		// Step 1: Delete notes on server
+		// ...
+		// Step 2: Delete the notes locally
+		for (var i=this.notes.length-1; i >= 0; i--) {
+			let current_note = this.notes[i]
+			if (noteIDArray.includes(current_note.id)) {
+				this.notes.splice(i, 1)
+			}
+		}
+	},
 	recurseNotebooks(callback, parent_id=null, search_array=null) {
 		var notebooks = this.notebooks
 		if (search_array) notebooks = search_array

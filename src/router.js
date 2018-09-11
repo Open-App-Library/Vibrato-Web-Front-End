@@ -6,6 +6,7 @@ import 'vuetify/dist/vuetify.min.css'
 import GenericNoteFilter from './views/GenericNoteFilter.vue'
 import NewNote from './views/NewNote.vue'
 import FavoriteNotes from './views/FavoriteNotes.vue'
+import TrashNotes from './views/TrashNotes.vue'
 
 Vue.use(Router)
 Vue.use(Vuetify)
@@ -29,6 +30,11 @@ export default new Router({
 			path: '/favorites',
 			name: 'favorites',
 			component: FavoriteNotes,
+		},
+		{
+			path: '/trash',
+			name: 'trash',
+			component: TrashNotes,
 		},
 		{
 			path: '/notebook/:notebook_id',
